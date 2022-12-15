@@ -12,6 +12,10 @@ public class Tempo {
 	public int segundo;
 	
 	public static void main(String[] args) {
+		pegarDados();
+	}
+	
+	public static void pegarDados() {
 		Scanner scanner = new Scanner(System.in);
 		
 		Tempo hoje = new Tempo();
@@ -46,6 +50,7 @@ public class Tempo {
 		tipoDaQuantidade = scanner.next();
 		
 		exibirNovaData(quantidadeAdicionar, tipoDaQuantidade, hoje.ano, hoje.mes, hoje.dia, hoje.hora, hoje.minuto, hoje.segundo);
+	
 	}
 	
 	public static void exibirNovaData(int quant, String tipo, int y, int m, int d, int h, int M, int s) {
