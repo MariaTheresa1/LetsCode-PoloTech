@@ -31,44 +31,53 @@ public class JogoDaVelha {
 				tabuleiro[i][j] = '_';				
 			}
 		}
-		exibirTabuleiro(tabuleiro);
-		
-		
-		do {			
-			System.out.printf("\nJogador 1: %c. Escolha uma posição:\n", jogador1);		
-			System.out.print("Linha: ");	
-			linha = scanner.nextInt();
-			System.out.print("Coluna: ");		
-			coluna = scanner.nextInt();
-			
-			if(verificarPosicao(tabuleiro, linha, coluna) == true) {
-				tabuleiro[linha][coluna] = jogador1;
-				exibirTabuleiro(tabuleiro);
-				break;
-			} else {
-				System.out.println("\nPosição inválida. Tente novamente.");		
-			}
-		} while(verificarPosicao(tabuleiro, linha, coluna) == false);
+		exibirTabuleiro(tabuleiro, jogador1, jogador2);
 		
 		do {
-			System.out.printf("\nJogador 2: %c. Escolha uma posição:\n", jogador2);		
-			System.out.print("Linha: ");	
-			linha = scanner.nextInt();
-			System.out.print("Coluna: ");		
-			coluna = scanner.nextInt();
+			do {			
+				System.out.printf("\nJogador 1: %c. Escolha uma posição:\n", jogador1);		
+				System.out.print("Linha: ");	
+				linha = scanner.nextInt();
+				System.out.print("Coluna: ");		
+				coluna = scanner.nextInt();
+				
+				if(verificarPosicao(tabuleiro, linha, coluna) == true) {
+					tabuleiro[linha][coluna] = jogador1;
+					exibirTabuleiro(tabuleiro, jogador1, jogador2);
+					break;
+				} else {
+					System.out.println("\nPosição inválida. Tente novamente.");		
+					exibirTabuleiro(tabuleiro, jogador1, jogador2);
+				}
+			} while(verificarPosicao(tabuleiro, linha, coluna) == false);
 			
-			if(verificarPosicao(tabuleiro, linha, coluna) == true) {
-				tabuleiro[linha][coluna] = jogador2;
-				exibirTabuleiro(tabuleiro);
+			if(ganhou(tabuleiro, jogador1, jogador2) == true) {
 				break;
-			} else {
-				System.out.println("\nPosição inválida. Tente novamente.");		
 			}
-		} while(verificarPosicao(tabuleiro, linha, coluna) == false);
+			
+			do {
+				System.out.printf("\nJogador 2: %c. Escolha uma posição:\n", jogador2);		
+				System.out.print("Linha: ");	
+				linha = scanner.nextInt();
+				System.out.print("Coluna: ");		
+				coluna = scanner.nextInt();
+				
+				if(verificarPosicao(tabuleiro, linha, coluna) == true) {
+					tabuleiro[linha][coluna] = jogador2;
+					exibirTabuleiro(tabuleiro, jogador1, jogador2);
+					break;
+				} else {
+					System.out.println("\nPosição inválida. Tente novamente.");		
+					exibirTabuleiro(tabuleiro, jogador1, jogador2);
+				}
+			} while(verificarPosicao(tabuleiro, linha, coluna) == false);
+			
+		} while (ganhou(tabuleiro, jogador1, jogador2) == false);
 	}
 	
-	public static void exibirTabuleiro(char[][] tabuleiro) {
+	public static void exibirTabuleiro(char[][] tabuleiro, char jogador1, char jogador2) {
 		
+		System.out.printf("Jogador 1: %c. Jogador 2: %c.\n", jogador1, jogador2);
 		System.out.println("   0 1 2");
 		for (int i = 0; i < 3; i++) {
 			System.out.print(i + "  ");
@@ -77,7 +86,7 @@ public class JogoDaVelha {
 			}
 			System.out.println();
 		}
-	}
+	}	
 	
 	public static boolean verificarPosicao(char[][] tabuleiro, int linha, int coluna) {
 		if(linha < 0 || coluna < 0 || linha > 3 || linha > 3 ||
@@ -85,4 +94,38 @@ public class JogoDaVelha {
 			return false;
 		return true;
 	}
+	
+	public static boolean ganhou(char[][] tabuleiro, char jogador1, char jogador2) {
+		if(tabuleiro[0][0] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[2][2] == jogador1 ||
+		   tabuleiro[0][0] == jogador1 && tabuleiro[0][1] == jogador1 && tabuleiro[0][2] == jogador1 ||
+		   tabuleiro[1][0] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[1][2] == jogador1 ||
+		   tabuleiro[2][0] == jogador1 && tabuleiro[2][1] == jogador1 && tabuleiro[2][2] == jogador1 ||
+		   tabuleiro[0][0] == jogador1 && tabuleiro[1][0] == jogador1 && tabuleiro[2][0] == jogador1 ||
+		   tabuleiro[0][1] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[2][1] == jogador1 ||
+		   tabuleiro[0][2] == jogador1 && tabuleiro[1][2] == jogador1 && tabuleiro[2][2] == jogador1 ||
+		   tabuleiro[0][2] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[2][0] == jogador1
+		) {
+			System.out.printf("Jogador 1 '%c' venceu.\n", jogador1);
+			return true;
+		} else if (tabuleiro[0][0] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][2] == jogador2 ||
+				   tabuleiro[0][0] == jogador2 && tabuleiro[0][1] == jogador2 && tabuleiro[0][2] == jogador2 ||
+				   tabuleiro[1][0] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[1][2] == jogador2 ||
+				   tabuleiro[2][0] == jogador2 && tabuleiro[2][1] == jogador2 && tabuleiro[2][2] == jogador2 ||
+				   tabuleiro[0][0] == jogador2 && tabuleiro[1][0] == jogador2 && tabuleiro[2][0] == jogador2 ||
+				   tabuleiro[0][1] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][1] == jogador2 ||
+				   tabuleiro[0][2] == jogador2 && tabuleiro[1][2] == jogador2 && tabuleiro[2][2] == jogador2 ||
+				   tabuleiro[0][2] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][0] == jogador2
+				) {
+			System.out.printf("Jogador 2 '%c' venceu.\n", jogador2);
+			return true;
+		} else if (tabuleiro[0][0] != '_' && tabuleiro[0][1] != '_' && tabuleiro[0][2] != '_' &&
+				   tabuleiro[1][0] != '_' && tabuleiro[1][1] != '_' && tabuleiro[1][2] != '_' && 
+				   tabuleiro[2][0] != '_' && tabuleiro[2][1] != '_' && tabuleiro[2][2] != '_') {
+			System.out.println("Deu velha.\n");
+			return true;
+		}
+		return false;
+	}
+	
+
 }
