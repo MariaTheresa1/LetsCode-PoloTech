@@ -13,10 +13,6 @@ public class Cliente {
 		this.conta = conta;
 	}
 	
-	public void getCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	
 	public String setCpf() {
 		return this.cpf;
 	}

@@ -11,16 +11,8 @@ public class Conta {
 		this.saldo = saldo;
 	}
 	
-	public void getNumero(int numero) {
-		this.numero = numero;
-	}
-	
 	public int setNumero() {
 		return this.numero;
-	}
-	
-	public void getAgencia(int agencia) {
-		this.agencia = agencia;
 	}
 	
 	public int setAgencia() {

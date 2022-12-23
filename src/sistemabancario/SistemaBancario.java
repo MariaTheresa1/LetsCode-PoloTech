@@ -41,7 +41,6 @@ public class SistemaBancario {
 		int escolha;
 		
 		do {
-					
 
 			System.out.println("*** MENU ***");			
 			System.out.println("1 - Consultar Saldo");
@@ -174,6 +173,7 @@ public class SistemaBancario {
 			if(agencia == clienteSelecionado.conta.setAgencia()) {
 				System.out.print("Qual o valor que deseja tranferir? ");
 				float valor = scanner.nextFloat();
+								
 				if(valor <= clienteAtual.conta.setSaldo()) {
 					for(Cliente cliente: listaDeClientes) {
 						if(cliente.equals(clienteAtual)) {
