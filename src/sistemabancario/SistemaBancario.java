@@ -1,8 +1,11 @@
 package sistemabancario;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-/* *** Sistema Bancário ***
+/* 
+
+*** Sistema Bancário ***
 - Deposito
 - Sacar
 - Transferir
@@ -10,7 +13,9 @@ import java.util.Scanner;
 - Transferir apenas se tiver saldo
 - Sacar apenas se tiver saldo
 
-- Todos os atributos tem que ser privados */
+- Todos os atributos tem que ser privados
+
+*/
 
 public class SistemaBancario {
 	public static void main (String[] args) {
@@ -19,15 +24,22 @@ public class SistemaBancario {
 		
 		Conta conta1 = new Conta(44444, 0001, 100.0f);
 		Conta conta2 = new Conta(55555, 0001, 200.0f);
-
+		
 		Cliente cliente1 = new Cliente("111", "Maria", "123", conta1);
 		Cliente cliente2 = new Cliente("222", "Pedro", "12345", conta2);
 		
-		Cliente clienteAtual = login(cliente1, cliente2);
+		ArrayList<Cliente> listaDeClientes = new ArrayList<Cliente>();
+		
+		listaDeClientes.add(cliente1);
+		listaDeClientes.add(cliente2);
+
+		Cliente clienteAtual = login(listaDeClientes);
 
 		int escolha;
 		
 		do {
+			System.out.printf("Olá %s\n\n", clienteAtual.setNome());			
+
 			System.out.println("*** MENU ***");			
 			System.out.println("1 - Consultar Saldo");
 			System.out.println("2 - Depositar");
@@ -50,10 +62,10 @@ public class SistemaBancario {
 				sacar(clienteAtual);
 				break;
 			case 4:
-				//tranferir(cliente1, cliente2);
+				listaDeClientes = tranferir(clienteAtual, listaDeClientes);
 				break;
 			case 5:
-				clienteAtual = login(cliente1, cliente2);
+				clienteAtual = login(listaDeClientes);
 				break;
 			case 0:
 				System.out.println("\nPrograma encerrado.");
@@ -66,10 +78,12 @@ public class SistemaBancario {
 		} while (escolha != 0);		
 	}
 	
-	public static Cliente login(Cliente cliente1, Cliente cliente2) {
+	public static Cliente login(ArrayList<Cliente> listaDeClientes) {
 		
 		Scanner scanner = new Scanner(System.in);
 				
+		Cliente clienteSelecionado = null;
+
 		while(true) {
 			
 			System.out.println("--- Login ---");
@@ -80,16 +94,23 @@ public class SistemaBancario {
 			System.out.print("Informe a senha: ");
 			String senha = scanner.next();
 			
-			if(cliente1.setCpf().equals(cpf) && cliente1.setSenha().equals(senha)) {
-				System.out.printf("\nOlá %s.\n", cliente1.setNome());
-				return cliente1;
-			} else if (cliente2.setCpf().equals(cpf) && cliente2.setSenha().equals(senha)) {		
-				System.out.printf("\nOlá %s.\n", cliente2.setNome());
-				return cliente2;
-			} else {
-				System.out.println("CPF e/ou senha inválidos, tente novamente.\n");
+			for(Cliente cliente: listaDeClientes) {
+				if(cpf.equals(cliente.setCpf())) {
+					clienteSelecionado = cliente;
+					break;
+				}
 			}
-		}		
+			
+			if(clienteSelecionado != null) {
+				if(senha.equals(clienteSelecionado.setSenha())) {
+					return clienteSelecionado;
+				} else {
+					System.out.println("Senha inválida, tente novamente.\n");
+				}
+			} else {
+				System.out.println("CPF inválido, tente novamente.\n");
+			}
+		}	
 	}
 	
 	public static void consultarSaldo(Cliente cliente) {
@@ -128,13 +149,34 @@ public class SistemaBancario {
 		}
 	}
 	
-	public static void tranferir(Cliente cliente1, Cliente cliente2) {
+	public static ArrayList<Cliente> tranferir(Cliente clienteAtual, ArrayList<Cliente> listaDeClientes) {
 
 		Scanner scanner = new Scanner(System.in);
-
-		System.out.print("Qual o valor que deseja tranferir? ");
-		float valor = scanner.nextFloat();
+		Cliente clienteSelecionado = null;
 		
-	}
-	
+		System.out.print("Qual o numero da conta: ");
+		int conta = scanner.nextInt();
+		
+		System.out.print("Qual o número da agencia: ");
+		int agencia = scanner.nextInt();
+		
+		for(Cliente cliente: listaDeClientes) {
+			if(conta == cliente.conta.setNumero()) {
+				clienteSelecionado = cliente;
+				break;
+			} 
+		}
+		if(clienteSelecionado != null) {
+			if(agencia == clienteSelecionado.conta.setAgencia()) {
+				System.out.print("Qual o valor que deseja tranferir? ");
+				float valor = scanner.nextFloat();
+				// transferencia
+			} else {
+				System.out.println("Número da agencia do cliente não encontrado.");
+			}
+		} else {
+			System.out.println("Número da conta do cliente não encontrado.");
+		}
+		return listaDeClientes;
+	}	
 }
