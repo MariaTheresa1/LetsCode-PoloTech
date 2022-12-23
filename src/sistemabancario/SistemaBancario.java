@@ -24,21 +24,24 @@ public class SistemaBancario {
 		
 		Conta conta1 = new Conta(44444, 0001, 100.0f);
 		Conta conta2 = new Conta(55555, 0001, 200.0f);
-		
+		Conta conta3 = new Conta(66666, 0001, 300.0f);
+
 		Cliente cliente1 = new Cliente("111", "Maria", "123", conta1);
 		Cliente cliente2 = new Cliente("222", "Pedro", "12345", conta2);
+		Cliente cliente3 = new Cliente("333", "Ana", "1234", conta3);
 		
 		ArrayList<Cliente> listaDeClientes = new ArrayList<Cliente>();
 		
 		listaDeClientes.add(cliente1);
 		listaDeClientes.add(cliente2);
+		listaDeClientes.add(cliente3);
 
 		Cliente clienteAtual = login(listaDeClientes);
 
 		int escolha;
 		
 		do {
-			System.out.printf("Olá %s\n\n", clienteAtual.setNome());			
+					
 
 			System.out.println("*** MENU ***");			
 			System.out.println("1 - Consultar Saldo");
@@ -103,6 +106,7 @@ public class SistemaBancario {
 			
 			if(clienteSelecionado != null) {
 				if(senha.equals(clienteSelecionado.setSenha())) {
+					System.out.printf("\nOlá %s!\n\n", clienteSelecionado.setNome());	
 					return clienteSelecionado;
 				} else {
 					System.out.println("Senha inválida, tente novamente.\n");
@@ -128,7 +132,7 @@ public class SistemaBancario {
 		
 		cliente.conta.getSaldo(cliente.conta.setSaldo() + valor);
 		
-		System.out.println("\nValor depositado com sucesso.");
+		System.out.println("\nValor depositado com sucesso.\n");
 
 	}
 	
@@ -142,10 +146,10 @@ public class SistemaBancario {
 		if(valor <= cliente.conta.setSaldo()) {
 			
 			cliente.conta.getSaldo(cliente.conta.setSaldo() - valor);
-			System.out.println("\nSaque bem sucedido.");
+			System.out.println("\nSaque bem sucedido.\n");
 
 		} else {
-			System.out.println("\nSaldo insuficiente.");
+			System.out.printf("\nSaldo insuficiente. Seu saldo é de R$ %.2f\n\n", cliente.conta.setSaldo());
 		}
 	}
 	
@@ -170,12 +174,25 @@ public class SistemaBancario {
 			if(agencia == clienteSelecionado.conta.setAgencia()) {
 				System.out.print("Qual o valor que deseja tranferir? ");
 				float valor = scanner.nextFloat();
-				// transferencia
+				if(valor <= clienteAtual.conta.setSaldo()) {
+					for(Cliente cliente: listaDeClientes) {
+						if(cliente.equals(clienteAtual)) {
+							cliente.conta.getSaldo(cliente.conta.setSaldo() - valor);
+						}
+						if(cliente.equals(clienteSelecionado)) {
+							cliente.conta.getSaldo(cliente.conta.setSaldo() + valor);
+						}
+					}
+					System.out.println("Transferência bem sucedida.\n");
+				} else {
+					System.out.printf("Saldo insuficiente. Seu saldo é de R$ %.2f\n\n", clienteAtual.conta.setSaldo());
+				}
+
 			} else {
-				System.out.println("Número da agencia do cliente não encontrado.");
+				System.out.println("Número da agencia não encontrado.\n");
 			}
 		} else {
-			System.out.println("Número da conta do cliente não encontrado.");
+			System.out.println("Número da conta não encontrado.\n");
 		}
 		return listaDeClientes;
 	}	
